@@ -13,6 +13,9 @@
 #include "sensor_Function.h"
 #include "adc.h"
 
+const int RIGHT = -1;
+const int LEFT = 1;
+
 /* * * * * * * * * *
  * Setup Variables *
  * * * * * * * * * */
@@ -46,6 +49,8 @@ float oldPosErrorW = 0;
 //PWM Variables
 float posPwmX = 0;
 float posPwmW = 0;
+
+int curAng;
 
 /* * * * * * * * * * * * *
  * Adjustable Variables  *
@@ -310,6 +315,28 @@ void moveOneCell(int moveSpeed, int maxSpeed)
 	oldEncoderCount = encoderCount;
 }
 
+void moveFowardAndRightCell(int moveSpeed, int maxSpeed)
+{
+	targetSpeedX = moveSpeed;
+	targetSpeedW = 0;
+	
+	do
+	{
+		if (needToDecelerate(distanceLeft, curSpeedX, moveSpeed) < decX)
+		{
+			targetSpeedX = maxSpeed;
+		}
+		else
+		{
+			targetSpeedX = moveSpeed;
+		}
+	} while(((encoderCount - oldEncoderCount) < oneCellDistance && LFSensor < LFValue2 && RFSensor < RFValue2) 
+	|| (LFSensor < LFValue1 && LFSensor > LFValue2) 
+	|| (RFSensor < RFValue1 && RFSensor > RFValue2));
+	
+	oldEncoderCount = encoderCount;
+}
+
 
 /* * * * * * * * * * * * * * * * * * * *
  * Basic Movements										 *
@@ -350,8 +377,19 @@ void forwardDistance(int distance, int left_speed, int right_speed, bool coast)
 	//targetSpeedW = 0;
 }
 
+void turnRightAngle(int direction)
+{
+	curAng = angle;
+	while (abs(angle-curAng) < abs(11900)) {
+			displayMatrix("LEFT");
+			//printf("angle: %d\tcurAngle: %d\tangle-curAngle: %d\r\n", angle, curAng, angle-curAng); 
+			targetSpeedW = direction*10;
+	}
+}
+
 void button1_interrupt(void) 
 {
+	curAng = angle;
 }
 
 void button2_interrupt(void) 
@@ -374,9 +412,8 @@ int main(void)
 	//curSpeedX = 0;
 	//curSpeedW = 0;
 	//shortBeep(2000, 8000);
-	/*
-	while(1) 
-	{
+	
+	while(1) {
 		readSensor();
 		readGyro();
 		readVolMeter();
@@ -386,7 +423,7 @@ int main(void)
 		setLeftPwm(100);
 		setRightPwm(100);
 		delay_ms(1000);
-	}*/
+	}
 	//forwardDistance(4000,0,0,true);
 	//displayMatrix("Sped");
 	//targetSpeedX = 100;
@@ -397,22 +434,26 @@ int main(void)
 	//delay_ms(2000);
 	//printf("==============================================\n\r=======================================================\r\n");
 	
-	while (1)
-	{
-		moveOneCell(20, 30);
-		targetSpeedX = 0;
-		targetSpeedW = 0;
-		delay_ms(1000);
-	}
 	//delay_ms(1000); 
 	//displayMatrix("Wat");
 	//delay_ms(1000);
 	//displayMatrix("STOP");
 	//displayMatrix("GO");
-	delay_ms(3000); 
-	targetSpeedX = 20;
+	
+	turnRightAngle(LEFT);
+	
 	targetSpeedW = 0;
-	delay_ms(5000);
+	delay_ms(1000);
+	turnRightAngle(RIGHT);
+	targetSpeedW = 0;
+	delay_ms(1000);
+	
+	displayMatrix("STOP");
+	delay_ms(3000); 
+	targetSpeedX = 0;
+	//
+	targetSpeedW = 10;
+	delay_ms(1000);
 	targetSpeedX = 0;
 	targetSpeedW = 0;
 	return 0;
