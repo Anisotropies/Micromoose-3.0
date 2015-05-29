@@ -1,0 +1,51 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.13.0.0
+Copyright (C) 2014 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Andrew Chan, UCLA, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.13.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.05 update 1 (build 106)
+Assembler:       Armasm.exe V5.05 update 1 (build 106)
+Linker/Locator:  ArmLink.exe V5.05 update 1 (build 106)
+Library Manager: ArmAr.exe V5.05 update 1 (build 106)
+Hex Converter:   FromElf.exe V5.05 update 1 (build 106)
+CPU DLL:         SARMCM3.DLL V5.13.0.0
+Dialog DLL:      DCM.DLL V1.13.1.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.14.0_KEIL
+Dialog DLL:      TCM.DLL V1.14.4.0
+ 
+<h2>Project:</h2>
+C:\Users\ackchan\Documents\GitHub\Micromooose-2.0\FuturaProject\project\micromouse_test.uvproj
+Project File Date:  05/09/2015
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+..\user\main.c(259): warning:  #223-D: function "abs" declared implicitly
+                  c_array[i][j].m_distance = abs(xMid - i) + abs(yMid - j);
+..\user\main.c(265): warning:  #223-D: function "abs" declared implicitly
+                  c_array[i][j].m_distance = abs(xMid - i) - 1 + abs(yMid - j);
+..\user\main.c(271): warning:  #223-D: function "abs" declared implicitly
+                  c_array[i][j].m_distance = abs(xMid - i) + abs(yMid - j) - 2;
+..\user\main.c(278): warning:  #223-D: function "abs" declared implicitly
+                  c_array[i][j].m_distance = abs(xMid - i) + abs(yMid - j) - 1;
+..\user\main.c(676): warning:  #111-D: statement is unreachable
+                                        delay_ms(5000);
+..\user\main.c(1203): warning:  #128-D: loop is not reachable
+  while(1) {
+..\user\main.c(886): warning:  #177-D: variable "j" was declared but never referenced
+        int j;
+..\user\main.c: 7 warnings, 0 errors
+linking...
+Program Size: Code=28556 RO-data=1700 RW-data=252 ZI-data=10596  
+FromELF: creating hex file...
+"..\obj\micromouse_test.axf" - 0 Error(s), 7 Warning(s).
+</pre>
+</body>
+</html>
