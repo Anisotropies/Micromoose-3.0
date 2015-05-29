@@ -410,7 +410,7 @@ F (..\ST_Libraries\inc\stm32f4xx_syscfg.h)(0x554DA262)()
 F (..\ST_Libraries\inc\stm32f4xx_tim.h)(0x554DA262)()
 F (..\ST_Libraries\inc\stm32f4xx_usart.h)(0x554DA262)()
 F (..\ST_Libraries\inc\stm32f4xx_wwdg.h)(0x554DA262)()
-F (..\user\main.c)(0x554F8944)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I..\ST_Libraries\inc -I..\ST_Libraries\src -I..\ST_Libraries\startup -I..\user -I..\obj -I..\project -I..\user_Libraries\inc -I..\user_Libraries\src -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\CMSIS-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F4xx-D__UVISION_VERSION="513" -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (..\user\main.c)(0x5568F81D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I..\ST_Libraries\inc -I..\ST_Libraries\src -I..\ST_Libraries\startup -I..\user -I..\obj -I..\project -I..\user_Libraries\inc -I..\user_Libraries\src -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\CMSIS-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F4xx-D__UVISION_VERSION="513" -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\ST_Libraries\startup\stm32f4xx.h)(0x554DA263)
 I (C:\Keil_v5\ARM\CMSIS\Include\core_cm4.h)(0x53471A74)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5476E210)
@@ -459,8 +459,6 @@ I (..\user_Libraries\inc\buzzer.h)(0x554DA266)
 I (..\user_Libraries\inc\main.h)(0x554DA266)
 I (..\user_Libraries\inc\sensor_Function.h)(0x554DA266)
 I (..\user_Libraries\inc\adc.h)(0x554DA266)
-I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5476E210)
-I (C:\Keil_v5\ARM\ARMCC\include\cstring)(0x5476E210)
 F (..\user\stm32f4xx_it.c)(0x554DA266)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I..\ST_Libraries\inc -I..\ST_Libraries\src -I..\ST_Libraries\startup -I..\user -I..\obj -I..\project -I..\user_Libraries\inc -I..\user_Libraries\src -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\Keil\ARM\CMSIS-I C:\Keil_v5\ARM\RV31\INC-I C:\Keil_v5\ARM\CMSIS\Include-I C:\Keil_v5\ARM\Inc\ST\STM32F4xx-D__UVISION_VERSION="513" -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f4xx_it.o --omf_browse ..\obj\stm32f4xx_it.crf --depend ..\obj\stm32f4xx_it.d)
 I (..\user\stm32f4xx_it.h)(0x554DA266)
 I (..\ST_Libraries\startup\stm32f4xx.h)(0x554DA263)
