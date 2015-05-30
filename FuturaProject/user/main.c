@@ -48,7 +48,10 @@ float oldPosErrorW = 0;
 //PWM Variables
 float posPwmX = 0;
 float posPwmW = 0;
-
+int32_t hasLeftWall = 615;
+int32_t hasRightWall = 815;  
+int32_t hasFrontWallLeft = 400; 
+int32_t hasFrontWallRight = 400; 
 /* * * * * * * * * * * * *
  * Adjustable Variables  *
  * * * * * * * * * * * * */
@@ -90,6 +93,7 @@ float decW = 1;
 
 //Distance Variables
 int oneCellDistance = 4500;
+int partialCellDistance = 5500;
 
 //Speed Settings
 /*
@@ -255,7 +259,7 @@ void calculateMotorPwm()
 	//	displayInt(sensorFeedback);
 	//rotationalFeedback = sensorFeedback;
 	//printf("Encoder FeedbackX = %d\r\n", encoderFeedbackX);
- 	posErrorX += curSpeedX - encoderFeedbackX;
+ 	posErrorX += curSpeedX -encoderFeedbackX;
  	posErrorW += curSpeedW - rotationalFeedback;
 	//displayMatrix("2");
  	posPwmX = (kpX * posErrorX) + (kdX * (posErrorX - oldPosErrorX));
@@ -306,34 +310,13 @@ int needToDecelerate(int32_t dist, int16_t curSpd,  int16_t endSpd)
 void forwardDistance(int distance, int left_speed, int right_speed, bool coast) 
 {
 	distanceLeft = distance;
-	/*
-	int curEnc = getLeftEncCount();
-	turning = 0;
-	while (getLeftEncCount() - curEnc < distance) {
-		left_enc = getLeftEncCount();
-		right_enc = getRightEncCount(); 
-		//printf("Encoder counts left: %d\r\n",distance - getLeftEncCount() + curEnc); 
-		//displayMatrix("FWD");
-		targetLeft = left_speed;
-		targetRight = right_speed;
-	}
-
-	if (!coast) {
-		targetLeft = 0;
-		targetRight = 0;
-	}
-	turning = 1;*/
 	while (distanceLeft>=0) 
 	{
-		//targetSpeedX = 100;
-		//targetSpeedW = 0;
-		setLeftPwm(100);
-		setRightPwm(100);
+		targetSpeedX = 10;
+		targetSpeedW = 0;
 	}
-		setLeftPwm(0);
-		setRightPwm(0);
-	//targetSpeedX = 0;
-	//targetSpeedW = 0;
+	  targetSpeedX = 0;
+		targetSpeedW = 0;
 }
 void moveOneCell(int moveSpeed, int maxSpeed)
 {
@@ -358,14 +341,36 @@ void moveOneCell(int moveSpeed, int maxSpeed)
 		targetSpeedX = 0;
 	targetSpeedW = 0;
 }
+void movePartialCell(int moveSpeed, int maxSpeed)
+{
+	targetSpeedX = moveSpeed;
+	targetSpeedW = 0;
+	
+	do
+	{
+		if (needToDecelerate(distanceLeft, curSpeedX, moveSpeed) < decX)
+		{
+			targetSpeedX = maxSpeed;
+		}
+		else
+		{
+			targetSpeedX = moveSpeed;
+		}
+	} while(((encoderCount - oldEncoderCount) < partialCellDistance && LFSensor < LFValue2 && RFSensor < RFValue2) 
+	|| (LFSensor < LFValue1 && LFSensor > LFValue2) 
+	|| (RFSensor < RFValue1 && RFSensor > RFValue2));
+	
+	oldEncoderCount = encoderCount;
+		targetSpeedX = 0;
+	targetSpeedW = 0;
+}
 
 void turnRightAngle(int direction)
 {
 	curAng = angle;
-	while (abs(angle-curAng) < abs(11000)) {
-			displayMatrix("LEFT");
+	while (abs(angle-curAng) < abs(10000)) {
 			//printf("angle: %d\tcurAngle: %d\tangle-curAngle: %d\r\n", angle, curAng, angle-curAng); 
-			targetSpeedW = direction*10;
+			targetSpeedW = direction*5;
 	}
 	targetSpeedX = 0;
 	targetSpeedW = 0;
@@ -391,66 +396,46 @@ int main(void)
 	Encoder_Configration();
 	buzzer_Configuration();
 	ADC_Config();
-	
-	//curSpeedX = 0;
-	//curSpeedW = 0;
-	//shortBeep(2000, 8000);
-	/*
-	while(1) 
-	{
-		readSensor();
-		readGyro();
-		readVolMeter();
-		printf("LF %d RF %d DL %d DR %d aSpeed %d angle %d voltage %d lenc %d renc %d\r\n", LFSensor, RFSensor, DLSensor, DRSensor, aSpeed, angle, voltage, getLeftEncCount(), getRightEncCount());
-		displayMatrix("UCLA");
-		
-		setLeftPwm(100);
-		setRightPwm(100);
-		delay_ms(1000);
-	}*/
-	//forwardDistance(4000,0,0,true);
-	//displayMatrix("Sped");
-	//targetSpeedX = 100;
-	//delay_ms(2000);
-	
-	//
-	//targetSpeedX = 100;
-	//delay_ms(2000);
-	//printf("==============================================\n\r=======================================================\r\n");
-	
-	//delay_ms(1000); 
-	//displayMatrix("Wat");
-	//delay_ms(1000);
-	//displayMatrix("STOP");
-	//displayMatrix("GO");
-	//delay_ms(3000); 
-	//targetSpeedX = 20;
-	//targetSpeedW = 0;
-	//delay_ms(5000);
-	//targetSpeedX = 0;
-	//targetSpeedW = 0;
-	//return 0;
-	/*
-	turnRightAngle(LEFT);
-	targetSpeedW = 0;
-	delay_ms(1000);
 
-	targetSpeedW = 0;
-	delay_ms(1000);
-	displayMatrix("STOP");
-	delay_ms(3000); 
-	targetSpeedX = 0;
-	targetSpeedW = 10;
-	delay_ms(1000);
+
+while(1) {
 	targetSpeedX = 0;
 	targetSpeedW = 0;
-*/
+delay_ms(1000);
+	 forwardDistance(1500,0,0,true);
+		delay_ms(1000);
+      if((DRSensor < hasRightWall)) {
+        //Go Right
+        displayMatrix("RIGT");
+        movePartialCell(10,20);
+				delay_ms(1000);
+        turnRightAngle(RIGHT);
+				delay_ms(1000);
+        forwardDistance(400,0,0,true);
+				delay_ms(1000);
 	
-	moveOneCell(10, 20);
-	delay_ms(1000);
-	turnRightAngle(RIGHT);
-	delay_ms(1000);
-	turnRightAngle(LEFT);
-	delay_ms(1000);
+      } else if((LFSensor < hasFrontWallLeft) && RFSensor < hasFrontWallRight) 
+				{
+        //Go Foward one cell
+					moveOneCell(10, 20);
+					delay_ms(1000);
+        //forwardDistance(4000,0,0,true);
+					displayMatrix("FWD");
+					delay_ms(1000);
+				} 
+			else 
+				{
+        //Turn Left
+				displayMatrix("LEFT");
+        movePartialCell(10,20);
+					delay_ms(1000);
+        turnRightAngle(LEFT);
+					delay_ms(1000);
+        forwardDistance(400,0,0,true);
+
+					delay_ms(1000);
+      }
+    }
+			
 	return 0;
 }
